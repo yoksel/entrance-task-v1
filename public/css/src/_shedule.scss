@@ -1,0 +1,125 @@
+
+/*.page-header {
+  display: none;
+}*/
+/* Shedule
+------------------------------ */
+.shedule {
+  display: flex;
+}
+
+.shedule__content {
+  min-width: 0;
+}
+
+.rooms-nav {
+  padding-top: 35px;
+}
+  .rooms-nav__title {
+    padding: 0 10px;
+    padding-right: 20px;
+    white-space: nowrap;
+    font-weight: bold;
+  }
+
+.days-nav {
+  height: 25px;
+  padding-bottom: 10px;
+}
+  .days-nav__item {
+    margin-right: 20px;
+    color: #000;
+
+    &--current {
+      border: none;
+    }
+  }
+
+.shedule__days {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+  overflow: auto;
+  border: 1px solid $color-silver;
+}
+
+.shedule__room {
+
+}
+
+.shedule__cell {
+  height: 45px;
+  line-height: 45px;
+}
+
+.shedule__room-events {
+  display: flex;
+}
+
+
+.shedule__day {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  /*border-right: 10px solid $color-darksilver;*/
+}
+
+.rooms-events {
+  display: flex;
+  outline: 1px solid gold;
+}
+
+.rooms-events__hour-events {
+  position: relative;
+  min-width: 30px;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+  outline: 1px solid $color-silver;
+  font-size: .9em;
+
+  &:hover {
+    .rooms-events__hour {
+      opacity: 1;
+    }
+
+  }
+}
+
+.rooms-events__hour {
+  position: absolute;
+  width: 100%;
+  opacity: .25;
+  /*text-align: center;*/
+  pointer-events: none;
+}
+
+.rooms-events__slot {
+  min-width: 20px;
+  text-align: center;
+  border-left: 1px solid #DDD;
+  box-sizing: border-box;
+  transition: all .15s;
+  cursor: pointer;
+
+  &:hover {
+    background: yellowgreen;
+  }
+
+  &--has-event {
+    background: orange;
+    border-color: darkorange;
+
+    &:hover {
+      background: gold;
+    }
+  }
+}
+
+.rooms-events__mins,
+.rooms-events__title {
+  display: none;
+}

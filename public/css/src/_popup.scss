@@ -1,0 +1,246 @@
+/* Popup
+------------------------------ */
+.section__title .popup-control {
+  margin-left: 20px;
+  font-size: 14px;
+}
+
+.body--popup-shown {
+  overflow: hidden;
+}
+
+.popup-glass {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  /*overflow: auto;*/ /* blur */
+  justify-content: center;
+  align-items: center;
+  background: rgba(255,255,255,.65);
+  backdrop-filter: blur(3px);
+
+  .body--popup-shown & {
+    display: flex;
+  }
+}
+
+.popup {
+  display: none;
+  position: absolute;
+  max-width: 400px;
+  z-index: 10;
+  padding: 40px;
+  padding-bottom: 30px;
+  background: #FFF;
+  border: 1px solid $color-silver;
+  box-shadow: $shadow;
+}
+
+.popup--openened {
+  display: block;
+}
+
+.list--cells .editable--opened {
+  max-width: none;
+  padding: 0;
+  flex-grow: 0;
+}
+
+.editable .popup--edit {
+  display: block;
+  position: relative;
+  box-shadow: none;
+  border: none;
+}
+
+.popup__title {
+  margin-bottom: 15px;
+}
+
+.popup__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.popup__item {
+  margin-bottom: 15px;
+
+  &--content {
+    margin-bottom: 7px;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.popup__value {
+  font-weight: bold;
+}
+
+.popup__fieldset {
+  margin-top: 15px;
+  padding: 0;
+  border: none;
+}
+
+.popup__legend {
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.popup .search-input {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.popup__label {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-grow: 1;
+  cursor: pointer;
+
+  &--range {
+    flex-direction: column;
+  }
+}
+
+.popup__label-text {
+  margin-right: 15px;
+}
+
+.popup__users-wrapper {
+  position: relative;
+  height: 195px;
+  overflow: auto;
+  margin: 0 -20px;
+  border: 1px solid $color-silver;
+  background: radial-gradient(farthest-side at top, $color-silver, transparent) top,
+              radial-gradient(farthest-side at bottom, $color-silver, transparent) bottom;
+  background-size: 100% 15px;
+  background-repeat: no-repeat;
+  border-radius: $radius;
+}
+
+.popup__users {
+  padding: 0 20px 15px;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 50px;
+  }
+
+  &::before {
+    top: 0;
+    background: linear-gradient(to bottom, white 60%, transparent);
+  }
+
+  &::after {
+    bottom: 0;
+    background: linear-gradient(to top, white 60%, transparent);
+  }
+}
+
+.popup__input {
+  margin-left: auto;
+  flex-grow: 1;
+}
+
+.popup__select {
+  flex-grow: 1;
+}
+
+.popup__checkbox {
+  position: absolute;
+  opacity: 0;
+
+  & + .popup__label-content {
+    border-radius: $radius;
+    border: 1px solid $color-silver;
+    /*opacity: .75;*/
+    color: $color-darksilver;
+  }
+
+  &:hover + .popup__label-content {
+    border-color: $color-darksilver;
+    opacity: 1;
+    color: #000;
+  }
+
+  &:focus + .popup__label-content {
+    box-shadow: $shadow--focus;
+    opacity: 1;
+    color: #000;
+  }
+
+  &:checked + .popup__label-content {
+    border-color: $color-darkgray;
+    opacity: 1;
+    color: #000;
+
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 11px;
+      height: 11px;
+      background: linear-gradient(to left bottom, $color-darkgray 50%, transparent 50%);
+      border-radius: 0 $radius 0 0;
+    }
+  }
+}
+
+.popup__range {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.popup__button-close {
+  position: absolute;
+  top: .25em;
+  right: .25em;
+  padding: .25em .5em;
+  line-height: 1;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-darksilver;
+  }
+
+  &:focus,
+  &:active {
+    outline: none;
+    box-shadow: inset $shadow--focus;
+  }
+}
+
+.popup__button-submit {
+  align-self: center;
+  margin-top: 20px;
+}
+
+.popup__buttons {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  margin-top: 20px;
+}
+

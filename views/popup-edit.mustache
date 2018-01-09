@@ -1,0 +1,20 @@
+<div class="popup popup--edit {{id}}" data-group="{{id}}">
+  <form class="popup__form" method="post">
+    <input type="hidden" name="action" value="update">
+    <div class="popup__content">
+      {{{inputs}}}
+    </div>
+    <div class="popup__buttons">
+      <button
+        class="popup__button button button--narrow button--save"
+        name="save"
+        value="save">Сохранить</button>
+
+      <button
+        class="popup__button button button--narrow button--remove"
+        name="remove"
+        value="remove">Удалить</button>
+    </div>
+  </form>
+  <button class="popup__button-close" type="button" title="Esc">&#10005;</button>
+</div>

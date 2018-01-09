@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <title>Shri 2018</title>
+    <link rel="stylesheet" href="./css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <body>
+    <div class="popup-glass"></div>
+
+    <div class="page">
+      {{{header}}}
+
+      <div class="page__content container">
+
+        <section class="section">
+          <h2 class="section__title">Расписание</h2>
+
+          {{{search}}}
+
+          <div class="shedule">
+            <nav class="rooms-nav">
+              {{{rooms}}}
+            </nav>
+            <div class="shedule__content tabs">
+              <nav class="days-nav">{{{days}}}</nav>
+              {{{shedule}}}
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    {{{popupAdd}}}
+    {{{popupEdit}}}
+
+    <script src="/scripts/common.js"></script>
+  </body>
+</html>

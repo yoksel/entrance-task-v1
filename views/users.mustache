@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <title>Shri 2018</title>
+    <link rel="stylesheet" href="./css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="page">
+      {{{header}}}
+      <div class="page__content container">
+
+        <section class="users">
+          <h2 class="section__title">Сотрудники ({{counter}}) <button class="false-link popup-control popup-control--add" data-target=".popup--add-user">Добавить</button></h2>
+
+          {{{search}}}
+
+          {{{users}}}
+
+        </section>
+      </div>
+    </div>
+
+    {{{popupAdd}}}
+    {{{popupEdit}}}
+
+    <script src="/scripts/common.js"></script>
+  </body>
+</html>

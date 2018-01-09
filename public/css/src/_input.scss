@@ -1,0 +1,15 @@
+input {
+  padding-left: 5px;
+  padding-right: 5px;
+  border: 1px solid $color-silver;
+  border-radius: $radius;
+
+  &:hover {
+    border-color: $color-darksilver
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: $shadow--focus;
+  }
+}

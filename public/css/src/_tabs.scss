@@ -1,0 +1,42 @@
+/* Tabs
+------------------------------ */
+.tabs {
+  margin: 0;
+}
+
+.tabs__controls {
+  margin: 0;
+  margin-bottom: 10px;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+}
+
+.tabs__control {
+  margin-right: 20px;
+  padding: .15em .5em;
+  border: none;
+  border-radius: $radius;
+  cursor: pointer;
+}
+
+.tabs__control-text {
+  border-bottom: 1px dotted;
+}
+
+.tabs__control--current {
+  background: mediumaquamarine;
+
+  .tabs__control-text {
+    border-bottom: none;
+  }
+}
+
+.tabs__content {
+  display: none;
+
+  &--current {
+    display: block;
+  }
+}
+

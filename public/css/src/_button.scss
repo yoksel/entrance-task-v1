@@ -1,0 +1,37 @@
+.button {
+  padding: 10px 30px;
+  background: #333;
+  border: none;
+  border-radius: $radius;
+  line-height: 1;
+  cursor: pointer;
+  color: #FFF;
+  transition: all .1s;
+
+  &--narrow {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  &:hover {
+    box-shadow: $shadow--focus;
+  }
+  &:focus,
+  &:active {
+    outline: none;
+    box-shadow: $shadow--focus;
+  }
+}
+
+.button--remove {
+  background: tomato;
+
+  &:hover {
+    box-shadow: 0 0 0 3px lightskyblue;
+  }
+  &:focus,
+  &:active {
+    box-shadow: 0 0 0 3px lightskyblue;
+  }
+}
+

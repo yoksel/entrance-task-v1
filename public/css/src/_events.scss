@@ -1,0 +1,14 @@
+.event__title {
+  line-height: 1.2;
+}
+
+.event__datetime {
+  margin-top: 10px;
+  font-style: italic;
+  color: $color-darksilver;
+
+  .date {
+    display: block;
+  }
+}
+
