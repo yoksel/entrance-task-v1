@@ -1,1 +1,5 @@
 node_modules
+db.sqlite3
+drafts
+*.css
+*.map

@@ -6,13 +6,15 @@
   border-radius: $radius;
 }
 
-.popup__range:focus + .false-range {
+.popup__range:focus + .false-range .false-range__content {
   box-shadow: $shadow--focus;
 }
 
 .false-range__period {
   height: 1.4em;
   min-width: 3em;
+  margin: 0 -10px;
+  padding-right: 25px;
   overflow: hidden;
   display: flex;
   flex-wrap: wrap;
@@ -23,17 +25,12 @@
 .false-range__end {
   font-size: 14px;
   color: $color-darksilver;
+  pointer-events: none;
 }
 .false-range__end {
+  margin-right: -25px;
   text-align: right;
 }
-
-.false-range__value {
-  padding: 0 3px;
-  box-sizing: border-box;
-  vertical-align: text-top;
-}
-
 
 .false-range__content {
   display: flex;
@@ -45,15 +42,45 @@
 }
 
 .false-range__stripe {
+  position: relative;
   height: 30px;
+  min-width: 3em;
   width: 20%;
-  overflow: hidden;
+  padding-right: 15px;
+  box-sizing: border-box;
   background: orange;
   line-height: 25px;
   text-align: center;
+
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -3px;
+    right: -7px;
+    bottom: -3px;
+    width: 15px;
+    background: gold;
+    border-radius: $radius;
+    border: 1px solid rgba(0,0,0,.35);
+    box-shadow: 0 0 3px 1px rgba(0,0,0,0.35);
+  }
 }
+
+.false-range__value {
+  display: inline-block;
+  height: 100%;
+  overflow: hidden;
+  padding: 0 3px;
+  box-sizing: border-box;
+  vertical-align: text-top;
+  pointer-events: none;
+  user-select: none;
+}
+
 
 .false-range__mins {
   margin-left: 1px;
+  line-height: 1.4;
   font-size: 12px;
 }

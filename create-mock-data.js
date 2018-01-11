@@ -47,11 +47,11 @@ function createData () {
     }
   ]);
 
-  const HOUR = 60 * 60 * 1000;
+  const hour = 60 * 60 * 1000;
   let now = new Date();
-  let oneHourLater = new Date(now.getTime() + HOUR);
-  let twoHoursLater = new Date(oneHourLater.getTime() + HOUR);
-  let threeHoursLater = new Date(twoHoursLater.getTime() + HOUR);
+  let oneHourLater = new Date(now.getTime() + hour);
+  let twoHoursLater = new Date(oneHourLater.getTime() + hour);
+  let threeHoursLater = new Date(twoHoursLater.getTime() + hour);
 
   let eventsPromise = models.Event.bulkCreate([
     {
@@ -66,8 +66,8 @@ function createData () {
     },
     {
       title: '🍨 Пробуем kefir.js',
-      dateStart: threeHoursLater,
-      dateEnd: twoHoursLater
+      dateStart: twoHoursLater,
+      dateEnd: threeHoursLater
     }
   ]);
 

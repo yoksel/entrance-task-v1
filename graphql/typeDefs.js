@@ -2,48 +2,49 @@ module.exports = `
 scalar Date
 
 type User {
-    id: ID!
-    login: String!
-    homeFloor: Int
-    avatarUrl: String!
+  id: ID!
+  login: String!
+  homeFloor: Int
+  avatarUrl: String!
 }
 
 input UserInput {
-    login: String!
-    homeFloor: Int
+  login: String!
+  homeFloor: Int
 }
 
 type UserRoom {
-    id: ID!
-    title: String!
+  id: ID!
+  title: String!
 }
 
 type Room {
-    id: ID!
-    title: String!
-    capacity: Int!
-    floor: Int!
+  id: ID!
+  title: String!
+  capacity: Int!
+  floor: Int!
+  events: [Event]
 }
 
 input RoomInput {
-    title: String!
-    capacity: Int!
-    floor: Int!
+  title: String!
+  capacity: Int!
+  floor: Int!
 }
 
 type Event {
-    id: ID!
-    title: String!
-    dateStart: Date!
-    dateEnd: Date!
-    users: [User]
-    room: Room
+  id: ID!
+  title: String!
+  dateStart: Date!
+  dateEnd: Date!
+  users: [User]
+  room: Room
 }
 
 input EventInput {
-    title: String!
-    dateStart: Date!
-    dateEnd: Date!
+  title: String!
+  dateStart: Date!
+  dateEnd: Date!
 }
 
 type Query {
@@ -66,10 +67,11 @@ type Mutation {
 
   createEvent(input: EventInput!, usersIds: [ID], roomId: ID!): Event
   updateEvent(id: ID!, input: EventInput!): Event
+  removeEvent(id: ID!): Event
+
   removeUserFromEvent(id: ID!, userId: ID!): Event
   addUserToEvent(id: ID!, userId: ID!): Event
   changeEventRoom(id: ID!, roomId: ID!): Event
-  removeEvent(id: ID!): Event
 }
 
 union SearchResult = User | Event | Room

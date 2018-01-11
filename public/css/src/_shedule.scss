@@ -58,68 +58,103 @@
   display: flex;
 }
 
-
-.shedule__day {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-  /*border-right: 10px solid $color-darksilver;*/
-}
-
 .rooms-events {
-  display: flex;
-  outline: 1px solid gold;
+  position: relative;
 }
 
-.rooms-events__hour-events {
-  position: relative;
-  min-width: 30px;
+.room-events__hours {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
-  list-style-type: none;
   display: flex;
-  outline: 1px solid $color-silver;
-  font-size: .9em;
+  list-style-type: none;
+  pointer-events: none;
+  border-bottom: 1px solid $color-silver;
+}
+.rooms-events__hour {
+  min-width: 80px;
+  padding: 3px;
+  box-sizing: border-box;
+  font-size: 12px;
+  opacity: .25;
+  line-height: 1;
 
-  &:hover {
-    .rooms-events__hour {
-      opacity: 1;
-    }
-
+  &--hovered {
+    opacity: 1;
   }
 }
+.rooms-events__mins {
+  font-size: .7em;
+}
 
-.rooms-events__hour {
-  position: absolute;
-  width: 100%;
-  opacity: .25;
-  /*text-align: center;*/
-  pointer-events: none;
+.room-events__slots {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
 }
 
 .rooms-events__slot {
   min-width: 20px;
   text-align: center;
-  border-left: 1px solid #DDD;
+  border-right: 1px solid #DDD;
   box-sizing: border-box;
-  transition: all .15s;
+  transition: all .25s;
+  filter: hue-rotate(0deg);
   cursor: pointer;
+
+  /*&::before {
+    content: attr(data-hours);
+    color: crimson;
+    font-size: 12px;
+  }*/
 
   &:hover {
     background: yellowgreen;
   }
 
   &--has-event {
-    background: orange;
-    border-color: darkorange;
+    z-index: 1;
+    flex-shrink: 0;
+    border-right: 0;
+    border-bottom: 1px solid rgba(0,0,0,.25);
 
     &:hover {
-      background: gold;
+      filter: hue-rotate(60deg);
     }
   }
 }
 
-.rooms-events__mins,
-.rooms-events__title {
+.rooms-events__slot-content {
   display: none;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+.rooms-events__time,
+.rooms-events__title {
+  flex-basis: 80%;
+}
+
+.rooms-events__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rooms-events__slot--has-event:not(.rooms-events__slot--width-1) {
+  .rooms-events__slot-content {
+    display: flex;
+  }
 }

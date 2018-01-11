@@ -2,12 +2,37 @@ const path = require('path');
 const fs = require('fs');
 const mustache = require('mustache');
 
+const now = new Date();
+const year = now.getFullYear();
+
+// ------------------------------
+
+function getTimeFromRequest(req) {
+  const dateSrc = req.daycode.split('/');
+  const date = dateSrc[0];
+  const month = dateSrc[1] - 1;
+
+  const hours = req.hours;
+  const mins = req.mins;
+  const duration = req.duration * 60 * 1000;
+
+  const eventDateStart = new Date(year, month, date, hours, mins);
+  const eventDateEnd = new Date(eventDateStart.getTime() + duration);
+
+  return {
+    start: eventDateStart,
+    end: eventDateEnd
+  };
+}
+
 // ------------------------------
 
 function findMatches(items, pageReqBody) {
   const matches = {
     byId: 0,
     byName: 0,
+    byDateRoom: 0,
+    byDateUsers: [],
   };
 
   if (pageReqBody.action)  {
@@ -21,6 +46,51 @@ function findMatches(items, pageReqBody) {
 
       if (pageReqBody.itemid == item.dataValues.id) {
         matches.byId++;
+      }
+
+      // Event, need check room & users
+      if (pageReqBody.start) {
+
+        const itemStartTime = item.dataValues.dateStart;
+        const itemEndTime = item.dataValues.dateEnd;
+        const time = getTimeFromRequest(pageReqBody);
+        const userIds = item.dataValues.userIds;
+
+        if ((time.start >= itemStartTime && time.start <= itemEndTime)
+          || (time.end >= itemStartTime && time.end <= itemEndTime)) {
+          // console.log('----->> Совпало время');
+
+          if (item.dataValues.RoomId == pageReqBody.roomid) {
+            // console.log('-->> Совпала переговорка');
+            matches.byDateRoom++;
+          }
+          else {
+            // console.log('pageReqBody');
+            // console.log(pageReqBody);
+
+            const usersAsKeys = {};
+
+            userIds.forEach(item => {
+              usersAsKeys[item] = item;
+            });
+
+            if (typeof pageReqBody.usersids == 'string') {
+              pageReqBody.usersids = [pageReqBody.usersids];
+            }
+
+            const founded = pageReqBody.usersids.filter(item => {
+              if (usersAsKeys[item] !== undefined) {
+                return item;
+              }
+            });
+
+            matches.byDateUsers = founded
+
+            if (founded.length > 0) {
+              // console.log('-->> Совпали пользователи');
+            }
+          }
+        }
       }
     });
   }
@@ -311,11 +381,38 @@ function addMods(params) {
 
 // ------------------------------
 
+function getErrorMarkup(error) {
+  if (!error) {
+    return '';
+  }
+
+  return `<div class="message message--error">
+    <div class="container">${error}</div>
+  </div>`;
+}
+
+// ------------------------------
+
+function getMessageMarkup(message) {
+  if (!message) {
+    return '';
+  }
+
+  return `<div class="message">
+    <div class="container">${message}</div>
+  </div>`;
+}
+
+// ------------------------------
+
 module.exports = {
   addMods: addMods,
   findMatches: findMatches,
   getAddPopupInputs: getAddPopupInputs,
+  getErrorMarkup: getErrorMarkup,
+  getMessageMarkup: getMessageMarkup,
   getSearch: getSearch,
+  getTimeFromRequest: getTimeFromRequest,
   renderPopup: renderPopup,
   sortByFloor: sortByFloor,
 };

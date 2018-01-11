@@ -71,6 +71,7 @@
 
   &--content {
     margin-bottom: 7px;
+    color: $color-darksilver;
   }
 
   &:last-child {
@@ -80,6 +81,7 @@
 
 .popup__value {
   font-weight: bold;
+  color: #000;
 }
 
 .popup__fieldset {
@@ -116,7 +118,8 @@
 
 .popup__users-wrapper {
   position: relative;
-  height: 195px;
+  min-width: 400px;
+  height: 150px;
   overflow: auto;
   margin: 0 -20px;
   border: 1px solid $color-silver;

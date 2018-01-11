@@ -1,4 +1,5 @@
 const now = new Date();
+const year = now.getFullYear();
 const eventsStep = 15;
 const eventsStepsInHour = 60 / eventsStep;
 
@@ -36,8 +37,9 @@ const todayObj = parseDate(now);
 const daysList = getDaysList();
 
 const hours = [];
-const startTime = 8;
-for (let i = startTime; i < (startTime + 12); i++) {
+const startHour = 8;
+const hoursInDay = 12;
+for (let i = startHour; i < (startHour + hoursInDay); i++) {
   hours.push(i);
 }
 
@@ -126,14 +128,12 @@ function getEmptySheduleForDay(roomsIds) {
   roomsIds.forEach(roomId => {
     shedule[roomId] = {};
     shedule[roomId].roomId = roomId;
-    shedule[roomId].hours = {};
+    shedule[roomId].events = [];
 
     hours.forEach(hour => {
 
-      shedule[roomId].hours[hour] = {
-        hour: hour,
-        events: getEmptyEvents()
-      };
+      shedule[roomId].events = shedule[roomId].events.concat(getEmptyEvents(hour));
+
     });
   });
 
@@ -142,18 +142,15 @@ function getEmptySheduleForDay(roomsIds) {
 
 // ------------------------------
 
-function getEmptyEvents() {
+function getEmptyEvents(hour) {
   const events = [];
 
   for (var i = 0; i < eventsStepsInHour; i++) {
     let mins = eventsStep * i;
 
-    if (mins == 0) {
-      mins = '00';
-    }
-
     events.push({
-      mins: `${mins}`,
+      hour: hour,
+      mins: mins,
       event: null
     });
   }
@@ -163,14 +160,28 @@ function getEmptyEvents() {
 
 // ------------------------------
 
+function getEventDuration(itemData) {
+  const start = itemData.dateStart;
+  const end = itemData.dateEnd;
+  let duration = end.getTime() - start.getTime();
+  duration = duration / 60 / 1000;
+
+  return duration;
+}
+
+// ------------------------------
+
 module.exports = {
     daysList: daysList,
     eventsStep: eventsStep,
     eventsStepsInHour: eventsStepsInHour,
-    getEmptySheduleForDay: getEmptySheduleForDay,
     getDayKey: getDayKey,
+    getEmptySheduleForDay: getEmptySheduleForDay,
+    getEventDuration: getEventDuration,
+    hoursInDay: hoursInDay,
     monthes: monthes,
     prettyDate: prettyDate,
     parseDate: parseDate,
+    startHour: startHour,
     todayDayKey: getDayKey(todayObj),
   };

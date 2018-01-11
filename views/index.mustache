@@ -5,10 +5,10 @@
     <link rel="stylesheet" href="./css/styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   <body>
-    <div class="popup-glass"></div>
-
     <div class="page">
       {{{header}}}
+      {{{actionError}}}
+      {{{actionMessage}}}
 
       <div class="page__content container">
 
@@ -30,8 +30,10 @@
       </div>
     </div>
 
-    {{{popupAdd}}}
-    {{{popupEdit}}}
+    <div class="popup-glass">
+      {{{popupAdd}}}
+      {{{popupEdit}}}
+    </div>
 
     <script src="/scripts/common.js"></script>
   </body>

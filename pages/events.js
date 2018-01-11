@@ -80,7 +80,7 @@ const searchData = {
   events: {
     id: 'events',
     selector: '.event',
-    placeholderText: 'Найти событие'
+    placeholderText: 'Найти событие по названию или переговорке'
   },
   users: {
     id: 'users',
@@ -306,7 +306,7 @@ function getAllEvents() {
     const dateEnd = dtTools.parseDate(itemData.dateEnd);
     const prettyDate = dtTools.prettyDate(dateStart, dateEnd);
 
-    let liItem = `<li class="item event" data-searchtitle="${itemData.title}">
+    let liItem = `<li class="item event" data-searchtitle="${itemData.title} ${roomData.title}">
         <h3 class="event__title">${itemData.title}</h3>
         <div class="event__room">${roomData.floor}. ${roomData.title}</div>
         <div class="event__datetime">${prettyDate} </div>

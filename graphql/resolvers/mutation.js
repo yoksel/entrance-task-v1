@@ -2,58 +2,57 @@ const { models } = require('../../models');
 
 module.exports = {
   // User
-  createUser (root, { input }, context) {
+  createUser ({ input }) {
     return models.User.create(input);
   },
 
-  updateUser (root, { id, input }, context) {
+  updateUser ({ id, input }) {
     return models.User.findById(id)
             .then(user => {
               return user.update(input);
             });
   },
 
-  removeUser (root, { id }, context) {
+  removeUser ({ id }) {
     return models.User.findById(id)
             .then(user => user.destroy());
   },
 
   // Room
-  createRoom (root, { input }, context) {
+  createRoom ({ input }) {
     return models.Room.create(input);
   },
 
-  updateRoom (root, { id, input }, context) {
+  updateRoom ({ id, input }) {
     return models.Room.findById(id)
             .then(room => {
               return room.update(input);
             });
   },
 
-  removeRoom (root, { id }, context) {
+  removeRoom ({ id }) {
     return models.Room.findById(id)
             .then(room => room.destroy());
   },
 
   // Event
-  createEvent (root, { input, usersIds, roomId }, context) {
+  createEvent ({ input, usersIds, roomId }) {
     return models.Event.create(input)
             .then(event => {
               event.setRoom(roomId);
-
               return event.setUsers(usersIds)
                     .then(() => event);
             });
   },
 
-  updateEvent (root, { id, input }, context) {
+  updateEvent ({ id, input }) {
     return models.Event.findById(id)
             .then(event => {
               return event.update(input);
             });
   },
 
-  removeUserFromEvent (root, { id, userId }, context) {
+  removeUserFromEvent ({ id, userId }) {
     return models.Event.findById(id)
             .then(event => {
               event.removeUser(userId);
@@ -61,14 +60,14 @@ module.exports = {
             });
   },
 
-  changeEventRoom (root, { id, roomId }, context) {
+  changeEventRoom ({ id, roomId }) {
     return models.Event.findById(id)
             .then(event => {
               event.setRoom(id);
             });
   },
 
-  removeEvent (root, { id }, context) {
+  removeEvent ({ id }) {
     return models.Event.findById(id)
             .then(event => event.destroy());
   }

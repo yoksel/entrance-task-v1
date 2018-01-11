@@ -54,24 +54,24 @@ tabsSets.forEach(tabsSet => {
 // FALSE RANGE
 // ------------------------------
 
-const FalseRange = function (elem) {
+const FalseRange = function (elem, popup) {
   this.elem = elem;
+  this.popup = popup;
 
   const targetSelector = elem.dataset.target;
-  this.target = document.querySelector(targetSelector);
+  this.target = popup.querySelector(targetSelector);
 
   const tiedSelector = elem.dataset.tied;
   this.tied = this.target.form.querySelector(`input[name="${tiedSelector}"]`);
   this.stripe = elem.querySelector('.false-range__stripe');
-
 
   this.content = elem.querySelector('.false-range__content');
   this.period = elem.querySelector('.false-range__period');
   this.start = elem.querySelector('.false-range__start');
   this.end = elem.querySelector('.false-range__end');
   this.val = elem.querySelector('.false-range__value');
-
   this.setValues();
+  this.isMouseDown = false;
 
   const that = this;
 
@@ -79,9 +79,34 @@ const FalseRange = function (elem) {
     this.moveControl(event);
   });
 
+  this.content.addEventListener('mousedown', (event) => {
+    this.isMouseDown = true;
+    this.content.addEventListener('mousemove', mouseMove);
+  });
+
+  this.content.addEventListener('mouseup', (event) => {
+    this.isMouseDown = false;
+    this.content.removeEventListener('mousemove', mouseMove);
+  });
+
+  this.stripe.addEventListener('mouseout', (event) => {
+    if (!event.toElement.classList.contains('false-range__content')
+      && !event.toElement.classList.contains('false-range__stripe')
+      && !event.toElement.classList.contains('false-range__value')) {
+      this.content.removeEventListener('mousemove', mouseMove);
+    }
+    else {
+      this.isMouseDown = false;
+    }
+  });
+
   this.target.addEventListener('input', () => {
     this.setValues();
   });
+
+  function mouseMove (event) {
+    that.moveControl(event);
+  }
 }
 
 FalseRange.prototype.setValues = function () {
@@ -141,14 +166,46 @@ FalseRange.prototype.showTime = function() {
 }
 
 // ------------------------------
-// POPUP--ADD CONTROL
+// ROOMS EVENTS
 // ------------------------------
 
+const RoomEvents = function(elem) {
+  this.elem = elem;
+  const slots = elem.querySelectorAll('.rooms-events__slot');
+
+  slots.forEach(slot => {
+    slot.addEventListener('mouseover', () => {
+      this.showTime(slot.dataset);
+    });
+
+    slot.addEventListener('mouseout', () => {
+      this.hour.innerHTML = this.hourInitValue;
+      this.hour.classList.remove('rooms-events__hour--hovered');
+    });
+  });
+}
+
+RoomEvents.prototype.showTime = function(dataset) {
+  this.hour = this.elem.querySelector(`.rooms-events__hour--${dataset.hours}`);
+  this.hourInitValue = this.hour.innerHTML;
+  this.hour.innerHTML = `${dataset.hours}<sup class="rooms-events__mins">${dataset.mins}</sup>`;
+  this.hour.classList.add('rooms-events__hour--hovered');
+}
+
 const roomEvents = document.querySelectorAll('.rooms-events');
-roomEvents.forEach(day => {
-  day.classList.add('popup-control--add');
-  day.dataset.target = '.popup--add-event';
+roomEvents.forEach(item => {
+  const roomEvent = new RoomEvents(item);
 });
+
+// Add classes for popup--add
+roomEvents.forEach(item => {
+  item.classList.add('popup-control--add');
+  item.dataset.target = '.popup--add-event';
+});
+
+// ------------------------------
+// POPUP--ADD CONTROL
+// ------------------------------
 
 let openedPopup = null;
 
@@ -160,6 +217,13 @@ const PopupControlAdd = function (elem) {
   this.data = Object.assign({}, elem.dataset);
 
   elem.addEventListener('click', (event) => {
+
+    // Change popup
+    if (event.target.dataset.itemid) {
+      this.target = document.querySelector('.popup--edit');
+      this.inputs = this.target.querySelectorAll('input, select');
+    }
+    // Fill popup for shedule events
     if (this.elem.dataset.day) {
       this.data = Object.assign(this.data, event.target.dataset);
       this.fillInputs();
@@ -178,11 +242,23 @@ PopupControlAdd.prototype.fillInputs = function () {
   this.inputs.forEach(input => {
     const dataForName = this.data[input.name];
 
-    if (dataForName !== undefined) {
+    if (dataForName == undefined || dataForName == '') {
+      return;
+    }
+    // For users
+    if (input.type == 'checkbox') {
+      input.checked = false;
+      const valsList = dataForName.split(',');
+
+      if (valsList.indexOf(input.value) >= 0){
+        input.checked = true;
+      }
+    }
+    else {
       input.value = dataForName;
 
       if (input.dataset.textelem) {
-        const textElem = document.querySelector(input.dataset.textelem);
+        const textElem = this.target.querySelector(input.dataset.textelem);
         textElem.innerHTML = dataForName;
       }
     }
@@ -191,6 +267,7 @@ PopupControlAdd.prototype.fillInputs = function () {
 
 PopupControlAdd.prototype.openPopup = function() {
   this.target.classList.toggle('popup--openened');
+
   const firstInput = this.target.querySelector('.popup__input[type="text"],.popup__range');
   setFocus(firstInput);
 };
@@ -198,10 +275,9 @@ PopupControlAdd.prototype.openPopup = function() {
 PopupControlAdd.prototype.initRanges = function() {
   const falseRanges = this.target.querySelectorAll('.false-range');
   falseRanges.forEach(item => {
-    const falseRange = new FalseRange(item);
+    const falseRange = new FalseRange(item, this.target);
   })
 };
-
 
 const popupControlsAdd = document.querySelectorAll('.popup-control--add');
 
@@ -341,10 +417,8 @@ const Popup = function (elem) {
   this.popupClass = findPopupClass(elem.classList);
   const close = elem.querySelector('.popup__button-close');
 
-  // console.log(this.popupClass);
-
   if (!close) {
-    // console.log('Нет закрывашки в ',elem);
+    // Нет закрывашки
     return;
   }
 
@@ -374,10 +448,10 @@ function closeOpenedPopup() {
   if (!openedPopup) {
     return;
   }
+  const group = openedPopup.dataset.group;
+  const groupData = editGroupsData[group];
 
-  if (openedPopup.dataset.group) {
-    const group = openedPopup.dataset.group;
-    const groupData = editGroupsData[group];
+  if (groupData) {
     groupData.current.close();
   }
   else {
@@ -388,16 +462,16 @@ function closeOpenedPopup() {
   openedPopup = null;
 }
 
-// Close on click on glass
-const popupGlass = document.querySelector('.popup-glass');
-popupGlass.addEventListener('click', () => {
-  closeOpenedPopup();
-});
-
 const popups = document.querySelectorAll('.popup');
 
 popups.forEach(item => {
   const popup = new Popup(item);
+});
+
+// Close on click on glass
+const popupGlass = document.querySelector('.popup-glass');
+popupGlass.addEventListener('click', () => {
+  closeOpenedPopup();
 });
 
 // ------------------------------
@@ -462,22 +536,7 @@ searchInputs.forEach(item => {
 });
 
 // ------------------------------
-// USER ADD
-// ------------------------------
-
-const addUserControl = document.querySelector('.add-user-control');
-let addUserWidget = null;
-
-if (addUserControl !== null) {
-  let addUserWidget = document.querySelector('.add-user');
-
-  addUserControl.addEventListener('click', addUserWidgetOpen);
-}
-
-function addUserWidgetOpen() {
-  addUserWidget.classList.toggle('add-user--open');
-}
-
+// HELPERS
 // ------------------------------
 
 function findPopupClass(classList) {
